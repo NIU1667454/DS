@@ -7,20 +7,29 @@ class Main {
 }
 
 class PointOfSale {
+- productCatalog : ProductCatalog
+- sales : ArrayList<Sale>
 - idLastSale : int
 - catalogFileName : String
-+ makeNewSale() : int
+- cashAmounts : HashMap<Double, Integer>
+
++ makeNewSale(changeMaking : String) : int
 + addLineItemToSale(idSale : int, \n\tprodName : String, qty : int)
 + printReceiptOfSale(saleId : int)
-+ payOneSaleCash(saleId : int, amountHanded : double)
++ payOneSaleCash(saleId : int, amountHanded : HashMap<Double, Integer>)
 + payOneSaleCash(saleId : int, ccnumber : String)
 + printPayment(saleId : int)
++ getProductNames() :ArrayList<String>
++ getcashAmounts() : HashMap<Double, Integer>
++ printCashAmountState()
 - searchSaleById(int id) : Sale
 }
 
 class ProductCatalog {
+- productSpecifications : ArrayList<ProductSpecification>
 + ProductCatalog(fileName : String)
 + searchByName(name : String) : ProductSpecification
++ getProductNames() : ArrayList<String>
 - addProductSpecification(name : String, price : double)
 }
 
@@ -35,23 +44,34 @@ Moritz    1.90
 class ProductSpecification {
 - price : double
 - name : String
++ ProductSpecification(name : String,  price : double)
++ getName() : String
++ getPrice() : double
 }
 
 class Sale {
 - id : int
+-isPaid : boolean
 - dateTime : LocalDateTime
-+ Sale(id : int)
+- saleLineItems : ArrayList<SaleLineItem>
+- payment : Payment
+- changeMaking : String
++ Sale(id : int, changeMaking : String)
++ getId() : int
 + addLineItem(prodSpec : ProductSpecification, qty : int)
-+ payCash(amountHanded : double)
-+ payCreditCard(amountToPay : double, ccnumber : String)
-+ printPayment()
 + total() : double
 + printReceipt()
-
++ badPrintReceipt()
++ payCash(amountHanded : HashMap<Double, Integer> amountHanded, cashAmounts : HashMap<Double, Integer>)
++ payCreditCard(amountToPay : double, ccnumber : String)
++ printPayment()
++ isPaid() : boolean
 }
 
 class SaleLineItem {
 - quantity : int
+-productSpecification : ProductSpecification
++SaleLineItem(productSpecification : ProductSpecification , quantity : int)
 + incrementQuantity()
 + subtotal() : double
 + print()
@@ -60,25 +80,40 @@ class SaleLineItem {
 abstract class Payment {
   # amountToPay : double
   + Payment(amountToPay : double)
-  + {abstract} pay()
   + {abstract} print()
 }
 
-class PaymentInCash extends Payment {
-  - amount : double
-  + PaymentInCash(amountToPay : double)
+abstract PaymentInCash extends Payment {
+  - amountHanded : double
+  - changeGiven : HashMap<Double, Integer>
+  - changeAmounts : HashMap<Double, Integer>
+  + PaymentInCash(amountHanded : HashMap<Double, Integer> , amountToPay : double, cashAmounts : HashMap<Double, Integer> )
   + print()
-  - change(totalSale : double) : double
+  - change()
 }
 
 Sale --> "0,1" Payment : payment
 
+class PaymentInCashGreedy extends PaymentInCash
+{
+    + PaymentInCashGreedy(amountHanded : HashMap<Double, Integer>, \n\tamountToPay :  double, cashAmounts : HashMap<Double, Integer> )
+    + change() : double
+    + print()
+}
+
+class PaymentInCashRandom extends PaymentInCash
+{
+    + PaymentInCashRandom(amountHanded : HashMap<Double, Integer>, \n\tamountToPay :  double, cashAmounts : HashMap<Double, Integer> )
+    + change() : double
+    + print()
+}
 
 class PaymentCreditCard extends Payment {
   - ccnumber : String
   - authorized : boolean  
   + PaymentCreditCard(ccnumber : int, \n\tamountToPay : double)
   + print()
+  + isAuthorized() : boolean
   - authorize() : boolean
 }
 

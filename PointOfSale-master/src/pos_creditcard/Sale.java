@@ -2,8 +2,10 @@ package pos_creditcard;
 
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Sale {
   boolean isPaid = false;
@@ -11,9 +13,11 @@ public class Sale {
   private ArrayList<SaleLineItem> saleLineItems = new ArrayList<>();
   private LocalDateTime dateTime = LocalDateTime.now();
   private Payment payment;  // note : supertype
+  private String changeMaking;
 
-  public Sale(int id) {
+  public Sale(int id, String changeMaking) {
     this.id = id;
+    this.changeMaking = changeMaking;
   }
 
   public int getId() {
@@ -62,9 +66,25 @@ public class Sale {
     System.out.printf("Total %.2f\n", total);
   }
 
-  public void payCash(double amountHanded) {
+  public void payCash(HashMap<Double, Integer> amountHanded, HashMap<Double, Integer> cashAmounts) {
     assert !isPaid : "sale " + id + " has already been paid";
-    payment = new PaymentInCash(amountHanded, total());
+    if(changeMaking.equals("optimal"))
+    {
+      System.out.println("Make change with random change maker");
+      payment = new PaymentInCashRandom(amountHanded, total(), cashAmounts);
+    }
+    else
+    {
+      System.out.println("Make change with greedy change maker");
+      payment = new PaymentInCashGreedy(amountHanded, total(), cashAmounts);
+    }
+    System.out.println("money handed ");
+    for (HashMap.Entry<Double, Integer> entry : amountHanded.entrySet()) {
+      System.out.println(entry.getValue() + " of " + entry.getKey() );
+      cashAmounts.put(entry.getKey(), entry.getValue() + cashAmounts.get(entry.getKey()));
+    }
+    System.out.println("added payment to cash box");
+
     isPaid = true;
   }
 

@@ -1,52 +1,54 @@
 package pos_creditcard;
 
+import java.util.HashMap;
+
 public class Main {
   public static void main(String[] args) {
     PointOfSale pointOfSale = new PointOfSale();
     // Some customers arrive, sit at a table, the waiter comes and makes a new sale.
     // Then takes the order : 4 Moritz and 1 Coca-cola
-    int idSale = pointOfSale.makeNewSale();
+    //SALE 0
+    int idSale = pointOfSale.makeNewSale("optimal");
     pointOfSale.addLineItemToSale(idSale, "Moritz", 4);
+    System.out.println("ordered 4 Moritz");
     pointOfSale.addLineItemToSale(idSale, "Coca-cola", 1);
-    // later 2 more Coca-colas
+    System.out.println("ordered 1 Coca-cola");
     pointOfSale.addLineItemToSale(idSale, "Coca-cola", 2);
+    System.out.println("ordered 2 Coca-cola");
     // ask for the bill and the waiter prints the receipt:
-    //Sale 1
-    //03-03-2024 10:57
-    //Moritz 4 x 1.9 = 7.6
-    //Coca-cola 3 x 1.2 = 3.6
-    //Total 11.2
     pointOfSale.printReceiptOfSale(idSale);
-    double handedAmount = 20.;
-    pointOfSale.payOneSaleCash(idSale, handedAmount);
+    //Money Handed
+    HashMap<Double, Integer> moneyHanded = new HashMap();
+    moneyHanded.put(10.0, 2);
+    pointOfSale.payOneSaleCash(idSale, moneyHanded);
+    //print change
+    pointOfSale.printPayment(idSale);
 
-    int idSale2 = pointOfSale.makeNewSale();
+    //SALE 1
+    int idSale1 = pointOfSale.makeNewSale("not");
+    System.out.println("Sale 2");
+    pointOfSale.addLineItemToSale(idSale1, "Moritz", 4);
+    System.out.println("ordered 4 Moritz");
+    pointOfSale.addLineItemToSale(idSale1, "Coca-cola", 1);
+    System.out.println("ordered 1 Coca-cola");
+    pointOfSale.addLineItemToSale(idSale1, "Coca-cola", 2);
+    System.out.println("ordered 2 Coca-cola");
+    // ask for the bill and the waiter prints the receipt:
+    pointOfSale.printReceiptOfSale(idSale1);
+    //Money Handed
+    HashMap<Double, Integer> moneyHanded1 = new HashMap();
+    moneyHanded1.put(10.0, 2);
+    pointOfSale.payOneSaleCash(idSale1, moneyHanded1);
+    //print change
+    pointOfSale.printPayment(idSale1);
+
+    //SALE 2
+    int idSale2 = pointOfSale.makeNewSale("");
     pointOfSale.addLineItemToSale(idSale2, "Nestea", 1);
     pointOfSale.printReceiptOfSale(idSale2);
     pointOfSale.payOneSaleCreditCard(idSale2, "4502360043567891");
     pointOfSale.printPayment(idSale2);
-  }
-  // the old main
-  /*
-  public static void main(String[] args) {
-    ArrayList<ProductSpecification> products = new ArrayList();
-    ArrayList<Sale> sales = new ArrayList<>();
 
-    ProductSpecification cocacola = new ProductSpecification("Coca-cola", 1.20);
-    ProductSpecification moritz = new ProductSpecification("Nestea", 1.50);
-    //...
-    products.add(cocacola);
-    products.add(moritz); // why do we want products ?
-    //...
-    Sale newSale1 = new Sale(1);
-    sales.add(newSale1); // why do we want sales ?
-    // later
-    Sale newSale2 = new Sale(1);
-    sales.add(newSale2);
-    //...
-    newSale1.saleLineItems.add(new SaleLineItem(moritz, 4)); // public attribute
-    newSale1.saleLineItems.add(new SaleLineItem(cocacola, 3));
+    pointOfSale.printCashAmountState();
   }
-  */
-
 }

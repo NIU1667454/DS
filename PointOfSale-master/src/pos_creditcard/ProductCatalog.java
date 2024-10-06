@@ -8,7 +8,7 @@ public class ProductCatalog {
   private ArrayList<ProductSpecification> productSpecifications = new ArrayList<>();
 
   public ProductCatalog(String fileName) {
-    /*
+
     // We have replaced this by reading names and prices from a text file
     addProductSpecification("Coca-cola", 1.20);
     addProductSpecification("Nestea", 1.50);
@@ -17,7 +17,8 @@ public class ProductCatalog {
     addProductSpecification("Olives Espinaler", 1.90);
     addProductSpecification("Patates Lays", 2.05);
     addProductSpecification("Trina", 1.35);
-     */
+
+    /*
     String line;
     try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
       while ((line = reader.readLine()) != null) {
@@ -28,6 +29,8 @@ public class ProductCatalog {
     } catch (Exception e) {
       e.printStackTrace();
     }
+     */
+
   }
 
   private void addProductSpecification(String name, double price) {
