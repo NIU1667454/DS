@@ -11,17 +11,14 @@ class PointOfSale {
 - sales : ArrayList<Sale>
 - idLastSale : int
 - catalogFileName : String
-- cashAmounts : HashMap<Double, Integer>
 
-+ makeNewSale(changeMaking : String) : int
++ makeNewSale(changeMaking : String, cashRegister : CashRegister) : int
 + addLineItemToSale(idSale : int, \n\tprodName : String, qty : int)
 + printReceiptOfSale(saleId : int)
 + payOneSaleCash(saleId : int, amountHanded : HashMap<Double, Integer>)
-+ payOneSaleCash(saleId : int, ccnumber : String)
++ payOneSaleCreditCard(saleId : int, ccnumber : String)
 + printPayment(saleId : int)
 + getProductNames() :ArrayList<String>
-+ getcashAmounts() : HashMap<Double, Integer>
-+ printCashAmountState()
 - searchSaleById(int id) : Sale
 }
 
@@ -56,13 +53,14 @@ class Sale {
 - saleLineItems : ArrayList<SaleLineItem>
 - payment : Payment
 - changeMaking : String
-+ Sale(id : int, changeMaking : String)
+- cashRegister : CashRegister
++ Sale(id : int, changeMaking : String, cashRegister : CashRegister)
 + getId() : int
 + addLineItem(prodSpec : ProductSpecification, qty : int)
 + total() : double
 + printReceipt()
 + badPrintReceipt()
-+ payCash(amountHanded : HashMap<Double, Integer> amountHanded, cashAmounts : HashMap<Double, Integer>)
++ payCash(amountHanded : HashMap<Double, Integer>)
 + payCreditCard(amountToPay : double, ccnumber : String)
 + printPayment()
 + isPaid() : boolean
@@ -82,12 +80,24 @@ abstract class Payment {
   + Payment(amountToPay : double)
   + {abstract} print()
 }
+class CashRegister {
+- id : int
+- cashAmounts : HashMap<Double, Integer>
++ CashRegister(cashAmounts : HashMap<Double, Integer>)
++ printCashAmountIni()
++ printCashAmountState()
++ getCashAmountState() : HashMap<Double, Integer>
++ getAvailable(coin : double) : int
++ update(coin : double, num : int)
+}
+
+PaymentInCash --> "0, 1" CashRegister : cashRegister
 
 abstract PaymentInCash extends Payment {
   - amountHanded : double
   - changeGiven : HashMap<Double, Integer>
-  - changeAmounts : HashMap<Double, Integer>
-  + PaymentInCash(amountHanded : HashMap<Double, Integer> , amountToPay : double, cashAmounts : HashMap<Double, Integer> )
+  - cashRegister : CashRegister
+  + PaymentInCash(amountHanded : HashMap<Double, Integer> , amountToPay : double, cashRegister : CashRegister )
   + print()
   - change()
 }
@@ -96,14 +106,14 @@ Sale --> "0,1" Payment : payment
 
 class PaymentInCashGreedy extends PaymentInCash
 {
-    + PaymentInCashGreedy(amountHanded : HashMap<Double, Integer>, \n\tamountToPay :  double, cashAmounts : HashMap<Double, Integer> )
+    + PaymentInCashGreedy(amountHanded : HashMap<Double, Integer>, \n\tamountToPay :  double, cashRegister : CashRegister )
     + change() : double
     + print()
 }
 
 class PaymentInCashRandom extends PaymentInCash
 {
-    + PaymentInCashRandom(amountHanded : HashMap<Double, Integer>, \n\tamountToPay :  double, cashAmounts : HashMap<Double, Integer> )
+    + PaymentInCashRandom(amountHanded : HashMap<Double, Integer>, \n\tamountToPay :  double, cashRegister : CashRegister )
     + change() : double
     + print()
 }

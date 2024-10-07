@@ -5,10 +5,26 @@ import java.util.HashMap;
 public class Main {
   public static void main(String[] args) {
     PointOfSale pointOfSale = new PointOfSale();
+    HashMap <Double, Integer> cashAmounts = new HashMap();
+    cashAmounts.put(20.0, 5);
+    cashAmounts.put(10.0, 5);
+    cashAmounts.put(5.0, 5);
+    cashAmounts.put(2.0, 5);
+    cashAmounts.put(1.0, 5);
+    cashAmounts.put(0.5, 5);
+    cashAmounts.put(0.2, 5);
+    cashAmounts.put(0.1, 5);
+    cashAmounts.put(0.05, 5);
+    cashAmounts.put(0.02, 5);
+    cashAmounts.put(0.01, 5);
+
+
+    CashRegister register = new CashRegister(cashAmounts);
+
     // Some customers arrive, sit at a table, the waiter comes and makes a new sale.
     // Then takes the order : 4 Moritz and 1 Coca-cola
     //SALE 0
-    int idSale = pointOfSale.makeNewSale("optimal");
+    int idSale = pointOfSale.makeNewSale("not", register);
     pointOfSale.addLineItemToSale(idSale, "Moritz", 4);
     System.out.println("ordered 4 Moritz");
     pointOfSale.addLineItemToSale(idSale, "Coca-cola", 1);
@@ -25,7 +41,7 @@ public class Main {
     pointOfSale.printPayment(idSale);
 
     //SALE 1
-    int idSale1 = pointOfSale.makeNewSale("not");
+    int idSale1 = pointOfSale.makeNewSale("optimal", register);
     System.out.println("Sale 2");
     pointOfSale.addLineItemToSale(idSale1, "Moritz", 4);
     System.out.println("ordered 4 Moritz");
@@ -43,12 +59,13 @@ public class Main {
     pointOfSale.printPayment(idSale1);
 
     //SALE 2
-    int idSale2 = pointOfSale.makeNewSale("");
+    int idSale2 = pointOfSale.makeNewSale("", register);
     pointOfSale.addLineItemToSale(idSale2, "Nestea", 1);
     pointOfSale.printReceiptOfSale(idSale2);
     pointOfSale.payOneSaleCreditCard(idSale2, "4502360043567891");
     pointOfSale.printPayment(idSale2);
 
-    pointOfSale.printCashAmountState();
+    register.printCashAmountState();
+
   }
 }

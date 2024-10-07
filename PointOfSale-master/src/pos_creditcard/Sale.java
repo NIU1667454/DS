@@ -14,10 +14,12 @@ public class Sale {
   private LocalDateTime dateTime = LocalDateTime.now();
   private Payment payment;  // note : supertype
   private String changeMaking;
+  private CashRegister cashRegister;
 
-  public Sale(int id, String changeMaking) {
+  public Sale(int id, String changeMaking, CashRegister cashRegister) {
     this.id = id;
     this.changeMaking = changeMaking;
+    this.cashRegister = cashRegister;
   }
 
   public int getId() {
@@ -66,22 +68,22 @@ public class Sale {
     System.out.printf("Total %.2f\n", total);
   }
 
-  public void payCash(HashMap<Double, Integer> amountHanded, HashMap<Double, Integer> cashAmounts) {
+  public void payCash(HashMap<Double, Integer> amountHanded) {
     assert !isPaid : "sale " + id + " has already been paid";
     if(changeMaking.equals("optimal"))
     {
       System.out.println("Make change with random change maker");
-      payment = new PaymentInCashRandom(amountHanded, total(), cashAmounts);
+      payment = new PaymentInCashRandom(amountHanded, total(), cashRegister);
     }
     else
     {
       System.out.println("Make change with greedy change maker");
-      payment = new PaymentInCashGreedy(amountHanded, total(), cashAmounts);
+      payment = new PaymentInCashGreedy(amountHanded, total(), cashRegister);
     }
     System.out.println("money handed ");
     for (HashMap.Entry<Double, Integer> entry : amountHanded.entrySet()) {
       System.out.println(entry.getValue() + " of " + entry.getKey() );
-      cashAmounts.put(entry.getKey(), entry.getValue() + cashAmounts.get(entry.getKey()));
+      cashRegister.getCashAmountState().put(entry.getKey(), entry.getValue() + cashRegister.getCashAmountState().get(entry.getKey()));
     }
     System.out.println("added payment to cash box");
 

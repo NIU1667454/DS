@@ -5,9 +5,9 @@ import java.util.HashMap;
 import java.util.Random;
 
 public class PaymentInCashRandom extends PaymentInCash{
-  public PaymentInCashRandom(HashMap<Double, Integer> amountHanded, double amountToPay, HashMap<Double, Integer> cashAmounts)
+  public PaymentInCashRandom(HashMap<Double, Integer> amountHanded, double amountToPay, CashRegister cashRegister)
   {
-    super(amountHanded, amountToPay, cashAmounts);
+    super(amountHanded, amountToPay, cashRegister);
   }
 
 
@@ -17,7 +17,7 @@ public class PaymentInCashRandom extends PaymentInCash{
     assert change >= 0;
     int attempts = 0;
     Random random = new Random();
-    ArrayList<Double> denominations = new ArrayList<>(cashAmounts.keySet()); // Lista de denominaciones disponibles
+    ArrayList<Double> denominations = new ArrayList<>(cashRegister.getCashAmountState().keySet()); // Lista de denominaciones disponibles
 
     while (change > 0 && attempts < 100)
     {
@@ -25,8 +25,7 @@ public class PaymentInCashRandom extends PaymentInCash{
       double selectedCash = denominations.get(random.nextInt(denominations.size()));
       attempts++;
       // Verificamos si hay suficientes monedas/billetes de esta denominación
-      int available = cashAmounts.get(selectedCash);
-
+      int available = cashRegister.getAvailable(selectedCash);
       if (change >= selectedCash && available > 0) {
 
         change = change -= selectedCash;
@@ -34,10 +33,11 @@ public class PaymentInCashRandom extends PaymentInCash{
         change = change / 1000;
 
         // Reducimos la cantidad de esta denominación disponible
-        cashAmounts.put(selectedCash, available - 1);
-
+        cashRegister.update(selectedCash, -1);
         // Registramos el cambio dado
         changeGiven.put(selectedCash, changeGiven.getOrDefault(selectedCash, 0) + 1);
+
+        available = cashRegister.getAvailable(selectedCash);
       }
     }
     if(attempts == 100)

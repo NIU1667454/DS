@@ -8,33 +8,16 @@ public class PointOfSale {
   private ArrayList<Sale> sales;
   private int idLastSale = 0;
   private final String FILE_NAME = "src/pos/catalog.txt";
-  HashMap<Double, Integer> cashAmounts;
+
 
   public PointOfSale() {
     productCatalog = new ProductCatalog(FILE_NAME);
     sales = new ArrayList<>();
-    cashAmounts = new HashMap();
-    cashAmounts.put(20.0, 5);
-    cashAmounts.put(10.0, 5);
-    cashAmounts.put(5.0, 5);
-    cashAmounts.put(2.0, 5);
-    cashAmounts.put(1.0, 5);
-    cashAmounts.put(0.5, 5);
-    cashAmounts.put(0.2, 5);
-    cashAmounts.put(0.1, 5);
-    cashAmounts.put(0.05, 5);
-    cashAmounts.put(0.02, 5);
-    cashAmounts.put(0.01, 5);
-
-    System.out.println("cash box initially loaded with");
-    for (HashMap.Entry<Double, Integer> entry : cashAmounts.entrySet()) {
-      System.out.println(entry.getValue() + " of " + entry.getKey() );
-    }
   }
 
-  public int makeNewSale(String changeMaking) {
+  public int makeNewSale(String changeMaking, CashRegister cashRegister) {
     idLastSale++;
-    Sale newSale = new Sale(idLastSale, changeMaking);
+    Sale newSale = new Sale(idLastSale, changeMaking, cashRegister);
     sales.add(newSale);
     return idLastSale;
   }
@@ -61,7 +44,7 @@ public class PointOfSale {
 
   public void payOneSaleCash(int saleId, HashMap<Double, Integer> amountHanded) {
     Sale sale = searchSaleById(saleId);
-    sale.payCash(amountHanded, cashAmounts);
+    sale.payCash(amountHanded);
   }
 
   public void payOneSaleCreditCard(int saleId, String ccnumber) {
@@ -78,13 +61,6 @@ public class PointOfSale {
     return searchSaleById(id).isPaid();
   }
 
-  public void printCashAmountState() {
-    System.out.println("after payment and giving change the cash box has");
-    for (HashMap.Entry<Double, Integer> entry : cashAmounts.entrySet()) {
-      if(entry.getValue() != 0)
-        System.out.println(entry.getValue() + " of " + entry.getKey() );
-    }
-  }
   // this is for the user interface
   public ArrayList<String> getProductNames() {
     return productCatalog.getProductNames();

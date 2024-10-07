@@ -4,8 +4,8 @@ import java.util.HashMap;
 public abstract class PaymentInCash extends Payment {
   double amountHanded;
   HashMap<Double, Integer> changeGiven;
-  HashMap<Double, Integer> cashAmounts;
-  public PaymentInCash(HashMap<Double, Integer> amountHanded, double amountToPay, HashMap<Double, Integer> cashAmounts) {
+  CashRegister cashRegister;
+  public PaymentInCash(HashMap<Double, Integer> amountHanded, double amountToPay, CashRegister cashRegister) {
     super(amountToPay);
     double handed = 0;
     for (HashMap.Entry<Double, Integer> entry : amountHanded.entrySet()) {
@@ -15,7 +15,7 @@ public abstract class PaymentInCash extends Payment {
     assert handed >= amountToPay;
     this.amountHanded = handed;
     changeGiven = new HashMap<>();
-    this.cashAmounts = cashAmounts;
+    this.cashRegister = cashRegister;
     /*
     System.out.println("cash box initially loaded with");
     for (HashMap.Entry<Double, Integer> entry : cashAmounts.entrySet()) {
