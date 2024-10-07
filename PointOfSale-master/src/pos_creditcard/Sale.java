@@ -14,12 +14,12 @@ public class Sale {
   private LocalDateTime dateTime = LocalDateTime.now();
   private Payment payment;  // note : supertype
   private String changeMaking;
-  private CashRegister cashRegister;
+  //private CashRegister cashRegister;
 
-  public Sale(int id, String changeMaking, CashRegister cashRegister) {
+  public Sale(int id, String changeMaking) { //, CashRegister cashRegister
     this.id = id;
     this.changeMaking = changeMaking;
-    this.cashRegister = cashRegister;
+    //this.cashRegister = cashRegister;
   }
 
   public int getId() {
@@ -68,7 +68,7 @@ public class Sale {
     System.out.printf("Total %.2f\n", total);
   }
 
-  public void payCash(HashMap<Double, Integer> amountHanded) {
+  public void payCash(HashMap<Double, Integer> amountHanded, CashRegister cashRegister) {
     assert !isPaid : "sale " + id + " has already been paid";
     if(changeMaking.equals("optimal"))
     {

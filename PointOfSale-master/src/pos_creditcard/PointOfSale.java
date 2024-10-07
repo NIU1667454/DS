@@ -15,9 +15,9 @@ public class PointOfSale {
     sales = new ArrayList<>();
   }
 
-  public int makeNewSale(String changeMaking, CashRegister cashRegister) {
+  public int makeNewSale(String changeMaking) {
     idLastSale++;
-    Sale newSale = new Sale(idLastSale, changeMaking, cashRegister);
+    Sale newSale = new Sale(idLastSale, changeMaking);
     sales.add(newSale);
     return idLastSale;
   }
@@ -42,9 +42,9 @@ public class PointOfSale {
     sale.printReceipt();
   }
 
-  public void payOneSaleCash(int saleId, HashMap<Double, Integer> amountHanded) {
+  public void payOneSaleCash(int saleId, HashMap<Double, Integer> amountHanded, CashRegister cashRegister) {
     Sale sale = searchSaleById(saleId);
-    sale.payCash(amountHanded);
+    sale.payCash(amountHanded, cashRegister);
   }
 
   public void payOneSaleCreditCard(int saleId, String ccnumber) {

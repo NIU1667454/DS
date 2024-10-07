@@ -24,7 +24,7 @@ public class Main {
     // Some customers arrive, sit at a table, the waiter comes and makes a new sale.
     // Then takes the order : 4 Moritz and 1 Coca-cola
     //SALE 0
-    int idSale = pointOfSale.makeNewSale("not", register);
+    int idSale = pointOfSale.makeNewSale("not");
     pointOfSale.addLineItemToSale(idSale, "Moritz", 4);
     System.out.println("ordered 4 Moritz");
     pointOfSale.addLineItemToSale(idSale, "Coca-cola", 1);
@@ -36,12 +36,12 @@ public class Main {
     //Money Handed
     HashMap<Double, Integer> moneyHanded = new HashMap();
     moneyHanded.put(10.0, 2);
-    pointOfSale.payOneSaleCash(idSale, moneyHanded);
+    pointOfSale.payOneSaleCash(idSale, moneyHanded, register);
     //print change
     pointOfSale.printPayment(idSale);
 
     //SALE 1
-    int idSale1 = pointOfSale.makeNewSale("optimal", register);
+    int idSale1 = pointOfSale.makeNewSale("optimal");
     System.out.println("Sale 2");
     pointOfSale.addLineItemToSale(idSale1, "Moritz", 4);
     System.out.println("ordered 4 Moritz");
@@ -54,12 +54,12 @@ public class Main {
     //Money Handed
     HashMap<Double, Integer> moneyHanded1 = new HashMap();
     moneyHanded1.put(10.0, 2);
-    pointOfSale.payOneSaleCash(idSale1, moneyHanded1);
+    pointOfSale.payOneSaleCash(idSale1, moneyHanded1, register);
     //print change
     pointOfSale.printPayment(idSale1);
 
     //SALE 2
-    int idSale2 = pointOfSale.makeNewSale("", register);
+    int idSale2 = pointOfSale.makeNewSale("");
     pointOfSale.addLineItemToSale(idSale2, "Nestea", 1);
     pointOfSale.printReceiptOfSale(idSale2);
     pointOfSale.payOneSaleCreditCard(idSale2, "4502360043567891");
