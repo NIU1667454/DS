@@ -26,28 +26,19 @@ public class Door {
     request.setDoorStateName(getStateName());
   }
 
+  //Les comprovacions per canviar d'estat estan als mètodes dels Door States
   private void doAction(String action) {
     switch (action) {
       case Actions.OPEN:
-        if (closed) {
-          closed = false;
-        } else {
-          System.out.println("Can't open door " + id + " because it's already open");
-        }
+        state.open();
         break;
       case Actions.CLOSE:
-        if (closed) {
-          System.out.println("Can't close door " + id + " because it's already closed");
-        } else {
-          closed = true;
-        }
+        state.close();
         break;
       case Actions.LOCK:
-        // TODO
-        // fall through
+        state.lock();
       case Actions.UNLOCK:
-        // TODO
-        // fall through
+        state.unlock();
       case Actions.UNLOCK_SHORTLY:
         // TODO
         System.out.println("Action " + action + " not implemented yet");
@@ -61,6 +52,10 @@ public class Door {
   public boolean isClosed() {
     return closed;
   }
+
+  public void setClosed(boolean close) { this.closed = close; }
+
+  public void setState(DoorState state) { this.state = state; }
 
   public String getId() {
     return id;
