@@ -6,6 +6,8 @@ public abstract class DoorState {
 
   public DoorState(Door door) { this.door = door; }
 
+  public String getName() { return this.name; }
+
   public abstract void open();
   public abstract void close();
   public abstract void lock();

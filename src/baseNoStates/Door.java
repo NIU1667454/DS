@@ -12,6 +12,7 @@ public class Door {
   public Door(String id) {
     this.id = id;
     closed = true;
+    state = new Locked(this);
   }
 
   public void processRequest(RequestReader request) {
@@ -37,8 +38,10 @@ public class Door {
         break;
       case Actions.LOCK:
         state.lock();
+        break;
       case Actions.UNLOCK:
         state.unlock();
+        break;
       case Actions.UNLOCK_SHORTLY:
         // TODO
         System.out.println("Action " + action + " not implemented yet");
@@ -62,7 +65,7 @@ public class Door {
   }
 
   public String getStateName() {
-    return "unlocked";
+    return state.getName();
   }
 
   @Override
