@@ -1,3 +1,3 @@
 public class BinaryOperator {
-  private int a, b;
+  private int a, b; //
 }
