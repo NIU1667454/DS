@@ -9,16 +9,10 @@ public class Locked extends DoorState
   }
 
   public void open() {
-    System.out.println("Cannot open the door, it's already locked.");
+    System.out.println("Cannot open the door, it's locked.");
   }
 
   public void close() {
-    if (!door.isClosed())
-    {
-      door.setClosed(true);
-      System.out.println("Door is now closed.");
-    }
-    else
       System.out.println("Door is already closed.");
   }
 

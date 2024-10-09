@@ -13,10 +13,10 @@ public class Unlocked extends DoorState{
     if (door.isClosed())
     {
       door.setClosed(false); // Abrimos la puerta físicamente
-      System.out.println("Door is now open.");
+      System.out.println("Door is now opened.");
     }
     else
-      System.out.println("Door is already open.");
+      System.out.println("Door is already opened.");
   }
 
   public void close()
@@ -32,8 +32,12 @@ public class Unlocked extends DoorState{
 
   public void lock()
   {
-    door.setState(new Locked(door)); // Cambiamos el estado a Locked
-    System.out.println("Door is now locked.");
+    if(door.isClosed())
+    {
+      door.setState(new Locked(door)); // Cambiamos el estado a Locked
+      System.out.println("Door is now locked.");
+    } else
+      System.out.println("Door is opened and can't be locked.");
   }
 
   public void unlock()
