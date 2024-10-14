@@ -1,0 +1,153 @@
+Door d1 behaviour: Log - Unlock - FireAlarm - Open - Lock
+Open code: 
+Code: 1111
+Door id: d1
+Door state: Unolocked
+handle Unlocked
+handle FireAlarm
+handle Open
+door d1 opened
+Open and fire the alarm: 
+Code: 2222
+Door id: d1
+Door state: Unolocked
+handle Unlocked
+handle FireAlarm
+door d1 opened
+NINOOOOO
+1st trial, wrong code: 
+Code: 1234
+Door id: d1
+Door state: Unolocked
+handle Unlocked
+handle FireAlarm
+handle Open
+1 trials
+handle Lock
+2nd trial, wrong code: 
+Code: 4321
+Door id: d1
+Door state: Unolocked
+handle Unlocked
+handle FireAlarm
+handle Open
+2 trials
+handle Lock
+3th trial, wrong code: 
+Code: 5555
+Door id: d1
+Door state: Unolocked
+handle Unlocked
+handle FireAlarm
+handle Open
+3 trials
+handle Lock
+Invalid Unlock code: 
+Code: 6666
+Door id: d1
+Door state: Locked
+handle Unlocked
+handle FireAlarm
+Invalid Unlock code: 
+Code: 7777
+Door id: d1
+Door state: Locked
+handle Unlocked
+handle FireAlarm
+Invalid Unlock code: 
+Code: 1111
+Door id: d1
+Door state: Locked
+handle Unlocked
+handle FireAlarm
+Valid Unlock code: 
+Code: 3333
+Door id: d1
+Door state: Locked
+handle Unlocked
+Change behaviour of door d1: Log - Open
+Open code: 
+Code: 1111
+Door id: d1
+Door state: Unolocked
+handle Open
+door d1 opened
+1st trial, wrong code: 
+Code: 2222
+Door id: d1
+Door state: Unolocked
+handle Open
+1 trials
+reached end of chain
+2nd trial, wrong code: 
+Code: 1234
+Door id: d1
+Door state: Unolocked
+handle Open
+2 trials
+reached end of chain
+3th trial, wrong code: 
+Code: 4321
+Door id: d1
+Door state: Unolocked
+handle Open
+3 trials
+reached end of chain
+4th trial, wrong code: 
+Code: 3333
+Door id: d1
+Door state: Unolocked
+handle Open
+4 trials
+reached end of chain
+Door can't handle Lock
+Change behaviour of door d1: Log - FireAlarm - Open
+Open code: 
+Code: 1111
+Door id: d1
+Door state: Unolocked
+handle FireAlarm
+handle Open
+door d1 opened
+Open and fire the alarm: 
+Code: 2222
+Door id: d1
+Door state: Unolocked
+handle FireAlarm
+door d1 opened
+NINOOOOO
+1st trial, wrong code: 
+Code: 1234
+Door id: d1
+Door state: Unolocked
+handle FireAlarm
+handle Open
+1 trials
+reached end of chain
+2nd trial, wrong code: 
+Code: 4321
+Door id: d1
+Door state: Unolocked
+handle FireAlarm
+handle Open
+2 trials
+reached end of chain
+3th trial, wrong code: 
+Code: 5555
+Door id: d1
+Door state: Unolocked
+handle FireAlarm
+handle Open
+3 trials
+reached end of chain
+4th trial, wrong code: 
+Code: 3333
+Door id: d1
+Door state: Unolocked
+handle FireAlarm
+handle Open
+4 trials
+reached end of chain
+Door can't handle Lock
+
+Process finished with exit code 0
