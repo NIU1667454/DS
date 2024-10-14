@@ -5,7 +5,7 @@ public class Locked extends DoorState
   public Locked(Door door)
   {
     super(door);
-    this.name = "locked";
+    this.name = States.LOCKED;
   }
 
   public void open() {
@@ -23,5 +23,11 @@ public class Locked extends DoorState
   public void unlock() {
     door.setState(new Unlocked(door)); // Cambiamos el estado a Unlocked
     System.out.println("Door is now unlocked.");
+  }
+
+  @Override
+  public void unlock_shortly() {
+    door.setState(new UnlockedShortly(door)); // Cambiamos el estado a Unlocked
+    System.out.println("Door is now unlocked for some time.");
   }
 }
