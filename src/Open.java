@@ -15,9 +15,10 @@ public class Open extends CodeHandler {
                 door.open();
             } else {
                 door.incrementNumTrials();
-                System.out.println(door.getNumTrials() + "trials");
+                System.out.println(door.getNumTrials() + " trials");
                 super.handleCode(code, door);
             }
+        }
         else {
                 //void, can't open until unlocked
         }
