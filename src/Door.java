@@ -3,12 +3,15 @@ public class Door {
     private CodeHandler codeHandler;
     private int numTrials = 0;
     private boolean locked = false;
+
     public void resetState() { // static method because it changes static attributes
         numTrials = 0; locked = false; }
+
     public void incrementNumTrials() { numTrials++; }
     public int getNumTrials() { return numTrials; }
     public boolean isLocked() { return locked; }
     public void lock() { locked = true; }
+
     public Door(String ident, CodeHandler ch) {
         id = ident;
         codeHandler = ch;
