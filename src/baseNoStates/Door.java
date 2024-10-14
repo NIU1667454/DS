@@ -43,8 +43,7 @@ public class Door {
         state.unlock();
         break;
       case Actions.UNLOCK_SHORTLY:
-        // TODO
-        System.out.println("Action " + action + " not implemented yet");
+        state.unlock_shortly();
         break;
       default:
         assert false : "Unknown action " + action;
