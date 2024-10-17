@@ -1,0 +1,71 @@
+@startuml
+class Add{
+    +Add(f1: Function, f2: Function)
+    +evaluate(dn: DualNumber): DualNumber
+}
+
+abstract class BinaryOperator{
+    #func1: Function
+    #func2: Function
+
+    +BinaryOperator(f1: Function, f2: Function)
+}
+
+class Constant{
+    -value: double
+
+    +Constant(v: double)
+    +evaluate(dn: DualNumber): DualNumber
+}
+
+class Cos{
+    -func: Function
+
+    +Cos(f: Function)
+    +evaluate(dn: DualNumber): DualNumber
+}
+
+class Sin{
+    -func: Function
+
+    +Sin(f: Function)
+    +evaluate(dn: DualNumber): DualNumber
+}
+
+class DualNumber{
+    +u: double
+    +uprime: double
+
+    +DualNumber(double u1, double u2)
+}
+
+class Multiply{
+    +Multiply(f1: Function, f2: Function)
+    +evaluate(dn: DualNumber): DualNumber
+}
+
+class X{
+    +X()
+    +evaluate(dn: DualNumber): DualNumber
+}
+
+interface Function{
+    +evaluate(DualNumber dn): DualNumber
+}
+
+class Main{
+    +main(args: String[])
+}
+
+Function --> DualNumber
+Function <|.. X
+BinaryOperator <|-- Add
+BinaryOperator <|-- Multiply
+Function <|.. Sin
+Function <|.. Constant
+Function <|.. BinaryOperator
+Function <|.. Cos
+
+
+
+@enduml
