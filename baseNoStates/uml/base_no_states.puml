@@ -1,0 +1,279 @@
+@startuml
+'https://plantuml.com/class-diagram
+skinparam classAttributeIconSize 0
+
+class Webserver {
+    - {static} PORT :int
+    - {static} FORMATTER : DateTimeFormatter
+    + Webserver()
+}
+
+class SocketThread {
+    - insocked : Socked
+    - makeRequest(tokens : String[]) : Request
+    - makeRequestReader(tokens : String[]) : RequestReader
+    - makeRequestArea(tokens : String[]) : RequestArea
+    - makeHeaderAnswer() : String
+    - makeJsonAnswer(request : Request) : String
+    + run()
+}
+
+Webserver +-right- SocketThread
+
+note right of SocketThread
+inner class
+of Webserver
+end note
+
+class DirectoryAreas {
+    - {static} rootarea: Area
+    - {static} allDoors: Door[]
+    - {static} uniqueInstance : DirectoryAreas
+    - {static} logger: Logger
+    + {static} acceptVisitor(visitor: Visitor)
+    + {static} makeAreas()
+    + {static} findDoorById(id : String) : Door
+    + {static} getAllDoors() : Door[]
+    + {static} getUniqueInstance() : DirectoryAreas
+}
+
+interface Visitor {
+    + visitPartition( partition : Area)
+    + visitSpace(space : Area)
+}
+
+class FindAreaById implements Visitor {
+    - id : String
+    - area : Area
+    + FindAreaById(id : String)
+    + visitPartition( partition : Area)
+    + visitSpace(space : Area)
+    + getArea() : Area
+}
+
+class GetDoorsGivingAccess implements Visitor {
+    - collectedDoors : Door[]
+    + visitPartition( partition : Area)
+    + visitSpace(space : Area)
+    + getCollectedDoors() : Door[]
+}
+
+abstract class Area{
+    #areaId: String
+    #areaDescription: String
+    #Partition parent: Partition
+
+    + Area(id: String, desc: String, par: Partition)
+    + getParent() : Partition
+    + {abstract} acceptVisitor(visitor: Visitor)
+    + {abstract} getDoorsGivingAccess(): Door[]
+    + {abstract} getSpaces(): Area[]
+    + {abstract} getId(): String
+}
+
+DirectoryAreas --> "*" Area : "rootarea"
+
+class Partition{
+    - areas: Area[]
+    + Partition(id: String, desc: String, par: Partition)
+    + getDoorsGivingAccess(): Door[]
+    + acceptVisitor(visitor : Visitor)
+    + getSpaces(): Area[]
+    + getId(): String
+    + addSpace(a: Area)
+}
+
+Partition --|> Area : "areas"
+
+class Space{
+    - doors: Door[]
+    + Space(id: String, desc: String, par: Partition)
+    + acceptVisitor(visitor : Visitor)
+    + getDoorsGivingAccess(): Door[]
+    + getSpaces(): Area[]
+    + getId(): String
+    + addDoor(d: Door)
+}
+
+Space --|> Area
+Space --> "*" Door : "doors"
+Door --> "1" Space : "fromSpace"
+Door --> "1" Space : "toSpace"
+
+class Door {
+    - id : String
+    - closed : boolean
+    - {static} logger : Logger
+    + Door(id : String)
+    + getToSpace() : Space
+    + getFromSpace() : Space
+    + processRequest(request : RequestReader)
+    + setState(doorState : DoorState)
+    + toJson() : JSONObject
+    + toString() : String
+    + isClosed() :boolean
+    + setClosed(b : boolean)
+    + getStateName() : String
+    + getId() : String
+    - doAction(action : String)
+}
+
+Door --> DoorState : "state"
+
+abstract class DoorState{
+    #door: Door
+    #name: String
+    +DoorState(door: Door)
+    +getName(): String
+    +open()
+    +close()
+    +lock()
+    +unlock()
+}
+
+DoorState <|-- Unlocked
+
+class Unlocked {
+    - logger : Logger
+    +Unlocked(door: Door)
+    +getName(): String
+    +open()
+    +close()
+    +lock()
+    +unlock()
+    +unlock_shortly()
+}
+
+DoorState <|-- Locked
+
+class Locked{
+    -logger : Logger
+    +Locked(door: Door)
+    +getName(): String
+    +open()
+    +close()
+    +lock()
+    +unlock()
+    +unlock_shortly()
+}
+
+class UnlockedShortly {
+    - logger : Logger
+    +UnlockedShortly(door: Door)
+    +open()
+    +close()
+    +lock()
+    +unlock()
+    +unlock_shortly()
+    -startTimer()
+    -checkDoorState()
+}
+
+class Propped {
+    - logger : Logger
+    +Propped(door: Door)
+    +getName(): String
+    +open()
+    +close()
+    +lock()
+    +unlock()
+    +unlock_shortly()
+}
+
+DoorState <|-- Propped
+DoorState <|-- UnlockedShortly
+
+class DirectoryUserGroups {
+    - {static} userGroups : UserGroup[]
+    - {static} uniqueInstance : DirectoryUserGroups
+    - {static} logger : Logger
+    + {static} getInstance() : DirectoryUserGroups
+    + {static} makeUserGroups()
+    + {static} findUserByCredential(credential : String) : User
+}
+
+class UserGroup{
+    - groupName: String
+    - timetables: Timetable
+    - actions : String[]
+    - areas : Area[]
+    - users: User[]
+
+    + UserGroup(nameGroup : String, schedules : Timetable, actions : String[], areas : Area[], usuarios : User[])
+    + addAction(action : String)
+    + addArea(area : Area)
+    + addUser(user : User)
+    + getActions() : String[]
+    + getAreas() : Area[]
+    + getUsers() : User[]
+    + getGroupName() : String
+    + getSchedule() : Timetable
+    + findUserByCredential(credential : String) : User
+}
+
+class User {
+    - name : String
+    - credential : String
+    - areas : Area[]
+    + User(name: String, credential: String)
+    + toString() : String
+    + getCredential() : String
+}
+
+DirectoryUserGroups --> "*" UserGroup : "userGroups"
+UserGroup --> "*" User : "users"
+
+class Timetable {
+    - startDate : LocalDate
+    - endDate : LocalDate
+    - days : DayOfWeek[]
+    - startTime : LocalTime
+    - endTime : LocalTime
+
+    + Timetable(startDate : LocalDate, endDate : LocalDate, days : DayOfWeek[], startTime : LocalTime, endTime : LocalTime)
+    + getStartDate() : LocalDate
+    + getEndDate() : LocalDate
+    + getDays() : DayOfWeek[]
+    + getStartTime() : LocalTime
+    + getEndTime() : LocalTime
+}
+
+UserGroup --> "*" Timetable : "timetables"
+User --> "*" Area : "areas"
+
+class States{
+    +LOCKED: String
+    +UNLOCKED: String
+    +UNLOCKED SHORTLY: String
+    +PROPPED: String
+    }
+
+class Actions {
+    +LOCK: String
+    +UNLOCK: String
+    +OPEN: String
+    +CLOSE: String
+}
+
+class Main {
+    + {static} main(args : String)
+}
+
+class Clock extends Timer {
+  - {static} clock: Clock
+
+  + {static} getUniqueInstance(): Clock
+}
+
+UnlockedShortly --> Clock
+
+note right of Main::main
+DirectoryAreas.makeDoors()
+DiretoryUserGroups.makeUserGroups()
+new Webserver()
+end note
+
+Main -[hidden]down- Webserver
+Webserver -[hidden]down- DirectoryAreas
+DirectoryAreas -[hidden]right- DirectoryUserGroups
+@enduml
